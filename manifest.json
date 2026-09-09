@@ -38,8 +38,8 @@
   "content_scripts": [
     {
       "matches": ["*://*.roblox.com/*"],
-      "js": ["roblox_popup.js"],
-      "css": ["roblox_popup.css"],
+      "js": ["app.js"],
+      "css": ["app.css"],
       "run_at": "document_idle"
     }
   ]
