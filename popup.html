@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* ============ CSS VARIABLES ============ */
+        :root {
+            --primary: #6c5ce7;
+            --primary-light: #a78bfa;
+            --bg-start: #0f0c29;
+            --bg-mid: #302b63;
+            --bg-end: #24243e;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text: #fff;
+            --text-muted: #aaa;
+            --danger: #ff5252;
+            --warning: #f39c12;
+            --success: #00b894;
+            color-scheme: dark;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 400px;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+            color: var(--text);
+            padding: 16px;
+            min-height: 400px;
+            overflow-y: auto;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-light); }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            padding: 16px;
+        }
+
+        .app-header { margin-bottom: 16px; }
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .app-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+            box-shadow: 0 0 10px rgba(108,92,231,0.3);
+        }
+        .header-title { flex: 1; text-align: center; }
+        .header-title h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        .header-title .subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .social-icon { width: 30px; height: 30px; cursor: pointer; }
+        .social-icon img { width: 100%; height: 100%; }
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 4px;
+            border: 1px solid var(--glass-border);
+        }
+        .tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #bbb;
+            padding: 10px 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .tab:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--text);
+            box-shadow: 0 4px 12px rgba(108,92,231,0.4);
+        }
+        .tab-badge {
+            background: var(--warning);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 2px 6px;
+            margin-left: 4px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #e0d7ff;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 14px;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 12px;
+            color: var(--text);
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+        }
+        input::placeholder, textarea::placeholder { color: #888; }
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+            background: #1e1e36;
+            box-shadow: 0 0 0 3px rgba(108,92,231,0.2);
+        }
+        textarea { resize: vertical; min-height: 80px; }
+        select {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+        select option { background: #1a1a2e; color: #fff; }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none;
+            border-radius: 12px;
+            color: var(--text);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108,92,231,0.5); }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary-light);
+        }
+        .btn-outline:hover { background: var(--primary); color: var(--text); }
+        .btn-small { padding: 8px 14px; font-size: 0.8rem; width: auto; }
+        .btn-danger { background: var(--danger); }
+        .btn-warning { background: var(--warning); }
+        .btn-success { background: var(--success); }
+
+        .status-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .error { color: var(--danger); }
+        .success { color: var(--success); }
+
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 90%;
+            max-width: 350px;
+        }
+        .toast {
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(30,30,60,0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        .toast.info { border-left: 4px solid var(--primary); }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+
+        .account-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .account-card:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(108,92,231,0.3);
+            transform: translateY(-2px);
+        }
+        .account-card .info { flex: 1; display: flex; align-items: center; gap: 12px; overflow: hidden; }
+        .account-card img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            object-fit: cover;
+        }
+        .account-card .account-name { font-weight: 600; font-size: 0.95rem; }
+        .account-card .account-username { font-size: 0.8rem; color: var(--text-muted); }
+        .account-card .actions { display: flex; gap: 6px; align-items: center; }
+        .account-card .remove-btn, .account-card .pause-btn {
+            border: none;
+            color: var(--text);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .account-card .remove-btn { background: var(--danger); }
+        .account-card .remove-btn:hover { background: #ff1744; box-shadow: 0 4px 12px rgba(255,82,82,0.4); }
+        .account-card .pause-btn { background: var(--warning); }
+        .account-card .pause-btn:hover { background: #f57c00; box-shadow: 0 4px 12px rgba(243,156,18,0.4); }
+        .account-card .pause-btn.resume { background: var(--success); }
+        .account-card .pause-btn.resume:hover { background: #00a381; box-shadow: 0 4px 12px rgba(0,184,148,0.4); }
+
+        .stat-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-box:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(108,92,231,0.3);
+            transform: translateY(-2px);
+        }
+        .stat-box strong {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-box span { display: block; font-size: 0.85rem; color: #bbb; margin-top: 4px; }
+
+        .server-preview, .image-preview {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: -5px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(108,92,231,0.1);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+        }
+        .server-preview img { width: 30px; height: 30px; border-radius: 50%; }
+        .image-preview img { max-width: 100%; max-height: 80px; display: block; margin: 0 auto; border-radius: 8px; }
+
+        .account-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .account-selector select { flex: 1; margin-bottom: 0; }
+        .account-selector img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: #333;
+        }
+
+        .toggle-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .toggle-switch { position: relative; width: 50px; height: 26px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        .toggle-switch input:checked + .toggle-slider { background-color: var(--primary); }
+        .toggle-switch input:checked + .toggle-slider:before { transform: translateX(24px); }
+
+        .pricing-container { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; }
+        .pricing-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .pricing-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        .pricing-card.pro {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(108,92,231,0.3);
+        }
+        .pricing-card h3 { font-size: 1.2rem; margin-bottom: 8px; color: var(--text); }
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+        .pricing-card .features { list-style: none; padding: 0; margin: 0 0 16px 0; text-align: left; }
+        .pricing-card .features li {
+            padding: 5px 0;
+            font-size: 0.9rem;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pricing-card .features li::before { content: "✓"; color: var(--primary); font-weight: bold; }
+        .pricing-card .btn { width: 100%; }
+        .pricing-card .btn:disabled { background: #555; cursor: not-allowed; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInOverlay 0.3s ease;
+        }
+        @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content {
+            background: linear-gradient(135deg, #2d2b55, #1a1a3e);
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(108,92,231,0.5);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-avatars {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .modal-avatars img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); }
+        .modal-avatars .arrow { font-size: 2rem; color: var(--primary-light); }
+        .modal-content h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .modal-content p { font-size: 0.9rem; color: #ccc; margin-bottom: 16px; }
+        .modal-content .btn { width: auto; padding: 8px 20px; font-size: 0.9rem; }
+
+        .hidden { display: none !important; }
+
+        .task-countdown {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: rgba(108,92,231,0.1);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            padding: 8px 12px;
+        }
+        .task-countdown span { display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-avatars">
+                <img id="modalAccountAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Account">
+                <span class="arrow">→</span>
+                <img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord">
+            </div>
+            <h4>Successfully launched!</h4>
+            <p>Your task has been activated.</p>
+            <button class="btn" id="modalCloseBtn">Close</button>
+        </div>
+    </div>
+
+    <!-- Secret Key Gate -->
+    <div id="secretGate" class="glass-panel">
+        <div class="app-header">
+            <div class="header-row">
+                <img src="https://images-ext-1.discordapp.net/external/ga7BkmUONRTqYV63KmqFWdYUgyZlClV0J124D3Vwh4s/%3Fsize%3D1280/https/cdn.discordapp.com/avatars/915174731332845588/1048603b75e335cbde17dc046f4848fe.webp?format=webp&width=384&height=384" class="app-logo" alt="AdPilot">
+                <div class="header-title">
+                    <h2>🔐 AdPilot</h2>
+                    <p class="subtitle">Enter your secret key to unlock</p>
+                </div>
+                <a href="https://discord.gg/b2gxfyNfc" target="_blank" class="social-icon" title="Join our Discord">
+                    <img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord">
+                </a>
+            </div>
+        </div>
+        <input type="password" id="secretKeyInput" class="input-field" placeholder="Your secret key...">
+        <button class="btn" id="submitKeyBtn">Unlock</button>
+        <div class="status-text" id="keyStatus"></div>
+    </div>
+
+    <!-- Dashboard (hidden initially) -->
+    <div id="dashboard" class="hidden">
+        <div class="app-header">
+            <div class="header-row">
+                <img src="https://images-ext-1.discordapp.net/external/ga7BkmUONRTqYV63KmqFWdYUgyZlClV0J124D3Vwh4s/%3Fsize%3D1280/https/cdn.discordapp.com/avatars/915174731332845588/1048603b75e335cbde17dc046f4848fe.webp?format=webp&width=384&height=384" class="app-logo" alt="AdPilot">
+                <div class="header-title">
+                    <h2>🤖 AdPilot</h2>
+                    <p class="subtitle">Your Discord Automation Hub</p>
+                </div>
+                <a href="https://discord.gg/b2gxfyNfc" target="_blank" class="social-icon" title="Join our Discord">
+                    <img src="https://www.svgrepo.com/show/353655/discord-icon.svg" alt="Discord">
+                </a>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="dashboardTab">Dashboard</button>
+            <button class="tab" data-tab="scheduledTab">Add Tasks <span id="scheduledTabBadge" class="tab-badge hidden">0</span></button>
+            <button class="tab" data-tab="autoReplyTab">Auto Reply</button>
+            <button class="tab" data-tab="pricingTab">Pricing</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboardTab" class="tab-content">
+            <div class="section">
+                <h3>📋 Discord Accounts</h3>
+                <div id="accountsList"></div>
+                <button class="btn btn-outline btn-small" id="addAccountBtn">+ Add Account</button>
+                <div id="addAccountForm" class="hidden" style="margin-top:10px;">
+                    <input type="text" id="tokenInput" class="input-field" placeholder="Discord token">
+                    <button class="btn btn-small" id="saveTokenBtn">Save</button>
+                    <button class="btn btn-outline btn-small" id="cancelAddBtn">Cancel</button>
+                    <div class="status-text" id="addStatus"></div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="stat-box">
+                    <strong id="runningTasksCount">0</strong>
+                    <span>Running Tasks</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="messagesSentCount">0</strong>
+                    <span>Messages Sent</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Tasks Tab -->
+        <div id="scheduledTab" class="tab-content hidden">
+            <div class="section">
+                <h3>⏱️ Add Task</h3>
+                <div id="noAccountsMsg" style="color:#aaa;text-align:center;" class="hidden">
+                    No Discord accounts added. Please add an account in the Dashboard first.
+                </div>
+                <div id="taskForm" class="hidden">
+                    <label style="font-size:0.9rem; color:#aaa;">Account</label>
+                    <div class="account-selector">
+                        <select id="accountSelect"></select>
+                        <img id="accountAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
+                    </div>
+
+                    <label style="font-size:0.9rem; color:#aaa;">Channel ID</label>
+                    <input type="text" id="channelIdInput" class="input-field" placeholder="Discord channel ID">
+                    <div class="server-preview hidden" id="serverPreview">
+                        <img src="https://cdn.discordapp.com/embed/avatars/0.png" id="serverIcon">
+                        <span id="serverName"></span>
+                    </div>
+
+                    <label style="font-size:0.9rem; color:#aaa;">Interval (seconds)</label>
+                    <input type="number" id="intervalInput" class="input-field" placeholder="Auto-detected from slowmode" min="5" disabled>
+                    <div id="slowmodeHint" style="font-size:0.75rem; color:#aaa; margin-bottom:10px; display:none;"></div>
+
+                    <label style="font-size:0.9rem; color:#aaa;">How many messages do you want to send?</label>
+                    <select id="messageLimitSelect" class="input-field">
+                        <option value="10">10</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+                        <option value="5000">5000</option>
+                    </select>
+
+                    <label style="font-size:0.9rem; color:#aaa;">Image URL <span style="font-size:0.8rem; color:#aaa;">(optional)</span></label>
+                    <input type="text" id="imageUrlInput" class="input-field" placeholder="https://i.imgur.com/...">
+                    <div class="image-preview hidden" id="imagePreview">
+                        <img id="imagePreviewImg" src="" alt="Preview">
+                    </div>
+
+                    <label style="font-size:0.9rem; color:#aaa;">Message</label>
+                    <input type="text" id="taskMessageInput" class="input-field" placeholder="Your message...">
+
+                    <button class="btn" id="launchTaskBtn">Launch Task</button>
+                    <div class="task-countdown" id="taskCountdown">
+                        <span id="countdownText">Next message in: --</span>
+                        <span id="remainingText">Messages left: --</span>
+                    </div>
+                    <div class="status-text" id="taskStatus"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auto Reply Tab -->
+        <div id="autoReplyTab" class="tab-content hidden">
+            <div class="section">
+                <h3>💬 Auto Reply</h3>
+                <div id="autoReplyNoAccountsMsg" style="color:#aaa;text-align:center;" class="hidden">
+                    No Discord accounts added. Please add an account first.
+                </div>
+                <div id="autoReplyForm" class="hidden">
+                    <label style="font-size:0.9rem; color:#aaa;">Account</label>
+                    <div class="account-selector">
+                        <select id="autoReplyAccountSelect"></select>
+                        <img id="autoReplyAccountAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
+                    </div>
+
+                    <label style="font-size:0.9rem; color:#aaa;">Reply Message</label>
+                    <textarea id="autoReplyMessageInput" class="input-field" rows="3" placeholder="Your auto reply message..."></textarea>
+
+                    <label style="font-size:0.9rem; color:#aaa;">Image URL <span style="font-size:0.8rem; color:#aaa;">(optional)</span></label>
+                    <input type="text" id="autoReplyImageUrlInput" class="input-field" placeholder="https://i.imgur.com/...">
+                    <div class="image-preview hidden" id="autoReplyImagePreview">
+                        <img id="autoReplyImagePreviewImg" src="" alt="Preview">
+                    </div>
+
+                    <label style="font-size:0.9rem; color:#aaa;">Delay after DM (seconds)</label>
+                    <input type="number" id="autoReplyDelayInput" class="input-field" placeholder="e.g. 5" min="0">
+
+                    <div class="toggle-row">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoReplyEnabledCheckbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <label for="autoReplyEnabledCheckbox">Enable Auto Reply</label>
+                    </div>
+
+                    <button class="btn" id="autoReplySaveBtn">Save Auto Reply</button>
+                    <div class="status-text" id="autoReplyStatus"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Tab -->
+        <div id="pricingTab" class="tab-content hidden">
+            <div class="section">
+                <h3>💳 Pricing</h3>
+                <div class="pricing-container">
+                    <div class="pricing-card">
+                        <h3>Free</h3>
+                        <div class="price">$0</div>
+                        <ul class="features">
+                            <li>3 Discord Accounts</li>
+                            <li>Scheduled Messages</li>
+                            <li>Auto Reply (text & image)</li>
+                            <li>Basic Support</li>
+                        </ul>
+                        <button class="btn" disabled>Current Plan</button>
+                    </div>
+                    <div class="pricing-card pro">
+                        <h3>Pro</h3>
+                        <div class="price">$4.99</div>
+                        <ul class="features">
+                            <li>10 Discord Accounts</li>
+                            <li>AI Conversation</li>
+                            <li>Message Forwarding</li>
+                            <li>Server Join</li>
+                            <li>Auto React</li>
+                            <li>Priority Support</li>
+                        </ul>
+                        <button class="btn" onclick="window.open('https://discord.gg/b2gxfyNfc','_blank')">Upgrade to Pro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

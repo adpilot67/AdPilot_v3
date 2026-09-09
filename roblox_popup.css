@@ -1,0 +1,273 @@
+/* roblox_popup.css – Scoped Roblox-style 2SV popup with theme support */
+
+/* Base variables – default to dark theme */
+.adpilot-roblox-popup-overlay {
+  --adpilot-modal-bg: #272930;
+  --adpilot-border: rgba(0, 0, 0, 0.2);
+  --adpilot-text: #f7f7f8;
+  --adpilot-text-secondary: #bcbec8;
+  --adpilot-input-bg: rgba(208, 217, 251, 0.12);
+  --adpilot-input-border: rgba(255, 255, 255, 0.3);
+  --adpilot-input-focus-bg: #343740;
+  --adpilot-button-bg: #f7f7f8;
+  --adpilot-button-text: #202227;
+  --adpilot-button-hover: #e0e0e0;
+  --adpilot-footer-link: #f7f7f8;
+  --adpilot-shield-icon-filter: none; /* keep white on dark */
+}
+
+/* Light theme overrides */
+.adpilot-theme-light {
+  --adpilot-modal-bg: #ffffff;
+  --adpilot-border: rgba(0, 0, 0, 0.1);
+  --adpilot-text: #202227;
+  --adpilot-text-secondary: #606770;
+  --adpilot-input-bg: #f0f2f5;
+  --adpilot-input-border: #ccd0d5;
+  --adpilot-input-focus-bg: #ffffff;
+  --adpilot-button-bg: #202227;
+  --adpilot-button-text: #ffffff;
+  --adpilot-button-hover: #3a3b3e;
+  --adpilot-footer-link: #202227;
+  --adpilot-shield-icon-filter: invert(1); /* make black shield on light background */
+}
+
+/* Overlay background */
+.adpilot-roblox-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Builder Sans", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+/* Modal dialog */
+.adpilot-modal-dialog {
+  background-color: var(--adpilot-modal-bg);
+  background-clip: padding-box;
+  border: 1px solid var(--adpilot-border);
+  border-radius: calc(calc(1px * 4) * 4);
+  outline: 0;
+  position: relative;
+  width: 480px;
+  max-width: 92%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  color: var(--adpilot-text);
+  min-height: 0;
+}
+
+.adpilot-modal-content {
+  padding-bottom: 20px;
+}
+
+.adpilot-modal-dialog.adpilot-popup1 {
+  width: 420px;
+  min-height: 105px;
+}
+
+/* Header */
+.adpilot-modal-header {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+  padding: 1px 5px 1px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.adpilot-modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--adpilot-text);
+}
+
+/* Body */
+.adpilot-modal-body {
+  margin: 0;
+  padding: 0 18px;
+  line-height: 1;
+  text-align: left;
+}
+
+/* Shield icon */
+.adpilot-shield-icon {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MiIgaGVpZ2h0PSI3MyIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDcyIDczIj48cGF0aCBmaWxsPSIjZjdmN2Y4IiBkPSJNMzQuNTc1IDUuNjg5YTQuNSA0LjUgMCAwIDEgMi44NDcgMGwyMi41IDcuNUE0LjUwNSA0LjUwNSAwIDAgMSA2MyAxNy40NjVsLS4wMDcgMi40MzZjLS4xMSAyNC43NzEtMS43MjggMzcuMjI3LTI1LjI1NSA0Ny41N2wtLjIwOC4wODVjLS45NzkuMzctMi4wNzguMzctMy4wNTcgMGwtLjIwOC0uMDg1Yy0yMy41MjgtMTAuMzQzLTI1LjE0NS0yMi44LTI1LjI1Ni00Ny41N0w5IDE3LjQ2NWE0LjUxIDQuNTEgMCAwIDEgMi43MzgtNC4xNWwuMzM4LS4xMjZ6bTEuODk4IDIuODQ2YTEuNSAxLjUgMCAwIDAtLjk0OSAwbC0yMi40OTkgNy41YTEuNTEgMS41MSAwIDAgMC0xLjAyNCAxLjQyNmMuMDE4IDEzLjM0OS4zMDUgMjIuNTM5IDMuMzA3IDI5Ljc1IDIuODc3IDYuOTExIDguNDQgMTIuMzYgMjAuMTYzIDE3LjUxNC4zMjkuMTQ1LjczLjE0NSAxLjA2IDAgMTEuNzIxLTUuMTUzIDE3LjI4NC0xMC42MDMgMjAuMTYxLTE3LjUxNEM1OS42OTQgNDAgNTkuOTgxIDMwLjgxIDYwIDE3LjQ2MWMwLS42NDYtLjQxNi0xLjIyMy0xLjAyNC0xLjQyNnoiLz48cGF0aCBmaWxsPSIjZjdmN2Y4IiBkPSJNMzYuMzggMTguNDc0YTcuMjcgNy4yNyAwIDAgMSA2Ljg5NSA3LjI2djIuNDIzSDQ1LjdsLjE4Ny4wMDVhMy42MzUgMy42MzUgMCAwIDEgMy40NDggMy42M3YxNC4yNTJsLS4wMDcuMTdjLS4wNi44NS0uNTcgMS42MDEtMS4zOCAxLjg5MWwtLjQuMTM5Yy0yLjEyMy43MTUtNi4wNzggMS43Mi0xMS41NCAxLjcybC0xLjA3Mi0uMDEyYy00LjkxLS4xMi04LjQ4Ny0xLjA0LTEwLjQ2OC0xLjcwOGwtLjQtLjEzOWMtLjg2NS0uMzA5LTEuMzg3LTEuMTQ0LTEuMzg3LTIuMDYxVjMxLjc5MmEzLjYzNSAzLjYzNSAwIDAgMSAzLjQ0Ny0zLjYzbC4xODgtLjAwNWgyLjQyMnYtMi40MjNhNy4yNyA3LjI3IDAgMCAxIDcuMjctNy4yN3pNMjYuMzE1IDMxLjE1N2EuNjM1LjYzNSAwIDAgMC0uNjM0LjYzNHYxMy42OWMxLjkyNi42MjQgNS40NTggMS40ODMgMTAuMzI3IDEuNDgzczguNC0uODU5IDEwLjMyNy0xLjQ4MnYtMTMuNjlhLjYzNS42MzUgMCAwIDAtLjYzNS0uNjM1em05LjY5MyAzLjk4YTEuNSAxLjUgMCAwIDEgMS41IDEuNXY0Ljg0NmExLjUgMS41IDAgMCAxLTMgMHYtNC44NDZhMS41IDEuNSAwIDAgMSAxLjUtMS41bTAtMTMuNjczYTQuMjcgNC4yNyAwIDAgMC00LjI3IDQuMjd2Mi40Mmg4LjUzOHYtMi40MmE0LjI3IDQuMjcgMCAwIDAtNC4yNjgtNC4yNyIvPjwvc3ZnPg==');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: auto 100px;
+  height: 156px;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  filter: var(--adpilot-shield-icon-filter);
+}
+
+/* Text */
+.adpilot-modal-text {
+  white-space: pre-line;
+  line-height: 1.5em;
+  text-align: center;
+  max-width: 543px;
+  margin: auto;
+  color: var(--adpilot-text-secondary);
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* Form */
+.adpilot-form-group {
+  margin-bottom: 10px;
+}
+
+.adpilot-input-field {
+  background-color: var(--adpilot-input-bg);
+  border: 1px solid var(--adpilot-input-border);
+  border-radius: 8px;
+  color: var(--adpilot-text);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  height: 38px;
+  padding: 5px 12px;
+  line-height: 1.4em;
+  width: 100%;
+  display: block;
+  transition: border-color 0.2s;
+  -webkit-text-security: disc;
+}
+
+.adpilot-input-field:focus {
+  outline: none;
+  border-color: rgba(208, 217, 251, 0.12);
+  background-color: var(--adpilot-input-focus-bg);
+}
+
+.adpilot-input-field.adpilot-input-error {
+  border-color: #df281f;
+}
+
+.adpilot-error-message {
+  color: #df281f;
+  font-size: 10px;
+  font-weight: 500;
+  text-align: left;
+  margin-top: 2px;
+  min-height: 12px;
+}
+
+.adpilot-error-placeholder {
+  color: transparent;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* Footer */
+.adpilot-modal-footer {
+  text-align: center;
+  border-top: 0;
+  margin: 18px 0 0;
+  padding: 0 18px 18px;
+}
+
+.adpilot-footer-btn-row {
+  width: 100%;
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.adpilot-verify-btn {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  overflow: hidden;
+  user-select: none;
+  color: var(--adpilot-button-text);
+  cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+  vertical-align: middle;
+  background-color: var(--adpilot-button-bg);
+  border: 1px solid var(--adpilot-button-bg);
+  border-radius: 8px;
+  height: auto;
+  padding: 9px;
+  font-size: 16px;
+  line-height: 100%;
+  display: inline-block;
+  transition: background-color 0.2s;
+}
+
+.adpilot-verify-btn:hover {
+  background-color: var(--adpilot-button-hover);
+  border-color: var(--adpilot-button-hover);
+}
+
+.adpilot-verify-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: var(--adpilot-button-bg);
+  border-color: var(--adpilot-button-bg);
+}
+
+.adpilot-start-btn {
+  background-color: var(--adpilot-button-bg);
+  color: var(--adpilot-button-text);
+  border: 1px solid var(--adpilot-button-bg);
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: auto;
+  min-width: 100px;
+}
+
+.adpilot-start-btn:hover {
+  background-color: var(--adpilot-button-hover);
+}
+
+.adpilot-footer-text {
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--adpilot-text-secondary);
+  text-align: center;
+  max-width: 543px;
+  margin: auto;
+}
+
+.adpilot-footer-text a {
+  color: var(--adpilot-footer-link);
+  text-decoration: none;
+}
+
+.adpilot-footer-text a:hover {
+  text-decoration: underline;
+}
+
+.adpilot-footer-important {
+  margin-top: 8px;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .adpilot-modal-title { font-size: 16px; }
+  .adpilot-modal-text { font-size: 12px; }
+  .adpilot-footer-text { font-size: 8px; }
+  .adpilot-verify-btn { padding: 7px; font-size: 16px; }
+  .adpilot-start-btn { padding: 7px 15px; font-size: 14px; }
+}
