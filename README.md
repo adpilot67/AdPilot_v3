@@ -13,8 +13,6 @@
 ---
 
 ## 🔒 Safety & Privacy Guarantee
-
-* **Zero Data Collection:** AdPilot does **not** collect, track, or sell your personal data or search history.
 * **100% Local Execution:** All core logic runs within your local browser.
 * **No Telemetry:** No data is sent to external servers.
 
